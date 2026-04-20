@@ -20,4 +20,5 @@ logging:
 
 key:
   token-secret: f8c1a9d7b4e62c5f93a1d8e7c0b4f6a2e9d3c7b5a1f8e4d6c2b9a0e7f3d1c8a5
+  token-issuer: HRFlow_gestao
 

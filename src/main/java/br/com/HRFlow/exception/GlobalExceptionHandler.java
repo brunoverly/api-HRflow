@@ -11,7 +11,19 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ErroAoTentarCriarTokenException.class)
-    public ResponseEntity<ErrorResponse> erroAoTentarCriarTokenHandler(ErroAoTentarCriarTokenException e, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> erroAoTentarCriarTokenHandler(Exception e, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                500,
+                "INTERNAL_SERVER_ERROR",
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ErroAoTentarRecuperarInfoDoTokenException.class)
+    public ResponseEntity<ErrorResponse> erroAoRecuperarTokenHandler(Exception e, HttpServletRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 500,
