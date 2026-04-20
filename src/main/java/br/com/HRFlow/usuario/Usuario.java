@@ -15,11 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nome;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 CREATE TABLE usuarios(
         id BIGSERIAL PRIMARY KEY,
+        nome VARCHAR(250) NOT NULL,
         email VARCHAR(200) NOT NULL UNIQUE,
         senha VARCHAR(400) NOT NULL,
         data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

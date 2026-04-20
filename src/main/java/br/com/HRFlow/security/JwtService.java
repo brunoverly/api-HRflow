@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 @Service
 public class JwtService {
@@ -19,7 +22,7 @@ public class JwtService {
     private String tokenIssuer;
 
     //criar um bearer token
-    public String generateToken(Usuario usuario) throws ErroAoTentarCriarTokenException {
+    public String generateToken(Usuario usuario){
         try{
             Algorithm algorithm = Algorithm.HMAC256(tokenSecret);
             return JWT.create()
@@ -29,7 +32,7 @@ public class JwtService {
                     .withExpiresAt(generateExpiresDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new ErroAoTentarCriarTokenException("Erro ao tentar criar o bearer token");
+            throw new RuntimeException("Erro ao tentar criar o bearer token");
         }
     }
 
@@ -65,6 +68,6 @@ public class JwtService {
 
     private Instant generateExpiresDate() {
         //retorna um LocalDateTime com fuso horário do local da requisição
-        return Instant.now().plusSeconds(7200);
+        return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-03:00"));
     }
 }
