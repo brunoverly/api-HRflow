@@ -20,8 +20,9 @@ O **HRFlow Gestão de Pessoas** é uma API RESTful desenvolvida para o gerenciam
 
 O grande diferencial técnico desta aplicação é a sua arquitetura orientada a eventos (*Spring Events*) aliada ao processamento assíncrono (`@Async`). Ações importantes — como boas-vindas na admissão, atualizações cadastrais ou notificações de desligamento aos gestores — disparam o envio automático de e-mails em background, utilizando templates HTML dinâmicos renderizados com *Thymeleaf*. Essa abordagem desacopla a regra de negócio e garante que a latência de servidores SMTP não trave o tempo de resposta da API.
 
+</div>
+
 <br>
+
 > [!WARNING]
 > 🚧 **Projeto ainda em construção** 🚧
-
-</div>
