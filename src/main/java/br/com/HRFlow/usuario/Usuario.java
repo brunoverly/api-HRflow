@@ -1,4 +1,4 @@
-package br.com.HRFlow.user;
+package br.com.HRFlow.usuario;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Getter
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,17 +26,17 @@ public class User implements UserDetails {
     private String senha;
     private LocalDateTime dataCriacao;
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UsuarioRole role;
 
     @PrePersist
     public void onCreate() {
         this.dataCriacao = LocalDateTime.now();
-        this.role = UserRole.USER;
+        this.role = UsuarioRole.USER;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) {
+        if(this.role == UsuarioRole.ADMIN) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
                     new SimpleGrantedAuthority("ROLE_USER")
