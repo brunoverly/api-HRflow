@@ -1,7 +1,5 @@
 package br.com.HRFlow.security;
 
-import br.com.HRFlow.exception.ErroAoTentarCriarTokenException;
-import br.com.HRFlow.exception.ErroAoTentarRecuperarInfoDoTokenException;
 import br.com.HRFlow.usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -36,7 +34,7 @@ public class JwtService {
     }
 
     //extrai o e-mail do usuario autenticado para futuras querries
-    public String getTokenSubject(String token) throws ErroAoTentarRecuperarInfoDoTokenException {
+    public String getTokenSubject(String token){
         try{
             Algorithm algorithm = Algorithm.HMAC256(tokenSecret);
             return JWT.require(algorithm)
@@ -45,7 +43,7 @@ public class JwtService {
                     .verify(token)
                     .getSubject();
         }catch (JWTVerificationException e){
-            throw new ErroAoTentarRecuperarInfoDoTokenException("Erro ao tentar recuperar {Subjet} do token");
+            throw new RuntimeException("Erro ao tentar recuperar {Subjet} do token");
         }
     }
 
