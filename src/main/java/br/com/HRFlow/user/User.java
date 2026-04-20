@@ -23,14 +23,14 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
-    private String password;
+    private String senha;
+    private LocalDateTime dataCriacao;
     @Enumerated(EnumType.STRING)
-    private LocalDateTime createdAt;
     private UserRole role;
 
     @PrePersist
     public void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.dataCriacao = LocalDateTime.now();
         this.role = UserRole.USER;
     }
 
@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return this.senha;
     }
 
     @Override
