@@ -1,6 +1,6 @@
 package br.com.HRFlow.auth.dto;
 
-public record LoginResonseDto(
+public record LoginResponseDto(
         String nome,
         String email,
         String token) {
