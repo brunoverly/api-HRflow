@@ -33,15 +33,17 @@ public class ColaboradorService {
 
         Colaborador colaborador = mapper.toEntity(dto);
         colaborador.setGestor(gestor);
-
+        colaborador.setEmail(colaborador.getEmail().toLowerCase());
         repository.save(colaborador);
+
         publisher.publishEvent(new ColaboradorCriadoEvent(this, colaborador));
 
         return mapper.toResponse(colaborador);
     }
 
     public void delete(Long id) {
-        Colaborador colaborador = repository.findByIdAndAtivoTrue(id).orElseThrow(()-> new EntityNotFoundException("Colaborador com id {" + id + "} não localizado no sistema"));
+        Colaborador colaborador = repository.findByIdAndAtivoTrue(id)
+                .orElseThrow(()-> new EntityNotFoundException("Colaborador com id {" + id + "} não localizado no sistema"));
         colaborador.setAtivo(false);
 
         repository.save(colaborador);
@@ -57,7 +59,8 @@ public class ColaboradorService {
     }
 
     public ColaboradoresResponseDto update(@Valid ColaboradoresRequestDto dto, Long id) {
-        Colaborador colaborador = repository.findByIdAndAtivoTrue(id).orElseThrow(() -> new EntityNotFoundException("Colaborador com id {" + id + "} não localizado no sistema"));
+        Colaborador colaborador = repository.findByIdAndAtivoTrue(id)
+                .orElseThrow(() -> new EntityNotFoundException("Colaborador com id {" + id + "} não localizado no sistema"));
 
         if(dto.nome() != null) colaborador.setNome(dto.nome());
         if(dto.email() != null) colaborador.setEmail(dto.email());

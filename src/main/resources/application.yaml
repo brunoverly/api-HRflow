@@ -2,7 +2,7 @@ spring:
   application:
     name: HRFlow-Gestao-de-Pessoas
   profiles:
-    active: dev
+    active: prod
   jpa:
     hibernate:
       ddl-auto: validate

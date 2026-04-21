@@ -5,6 +5,7 @@ import br.com.HRFlow.colaborador.dto.ColaboradoresResponseDto;
 import br.com.HRFlow.exception.DadosDuplicadosException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,8 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import java.time.LocalDate;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -121,5 +122,79 @@ public class ColaboradorServiceTest {
         verify(repository).existsByEmail(dtoRequest.email());
         verify(repository, never()).save(any());
     }
+
+    @Test
+    void deveDeletarColaboradorComSucesso(){
+        //ARRANGE
+        Long id = 1L;
+        Colaborador colaborador = createColaborador();
+        Colaborador gestor = createColaborador();
+        gestor.setId(2L);
+        colaborador.setGestor(gestor);
+
+        when(repository.findByIdAndAtivoTrue(id)).thenReturn(Optional.of(colaborador));
+        when(repository.findById(colaborador.getGestor().getId())).thenReturn(Optional.of(gestor));
+        //ACT
+
+        service.delete(id);
+        //ASSERT
+
+        assertFalse(colaborador.isAtivo());
+        verify(repository).findByIdAndAtivoTrue(id);
+        verify(repository).save(colaborador);
+        verify(publisher).publishEvent(any(ColaboradorDesativadoEvent.class));
+    }
+
+    @Test
+    void deveDeletarColaboradorComErroDeIdNaoEncontrado(){
+        //ARRANGE
+        Long id = 1L;
+
+        when(repository.findByIdAndAtivoTrue(id)).thenReturn(Optional.empty());
+
+        //ACT+ASSERT
+        Exception e =  assertThrows(EntityNotFoundException.class, () -> service.delete(id));
+        assertEquals(e.getMessage(), "Colaborador com id {1} não localizado no sistema");
+        verify(repository).findByIdAndAtivoTrue(id);
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void deveAtualizarColaboradorComSucesso(){
+        //ARRANGE
+        Long id = 1L;
+        Colaborador colaborador = createColaborador();
+        ColaboradoresRequestDto gestor = new ColaboradoresRequestDto(
+                "teste3",
+                "teste333@email.com",
+                "cargoTeste",
+                "departamentoTeste",
+                LocalDate.of(2025,04,04),
+                1L
+        );
+
+        when(repository.findByIdAndAtivoTrue(id)).thenReturn(Optional.of(colaborador));
+
+        //ACT+ASSERT
+        Exception e =  assertThrows(EntityNotFoundException.class, () -> service.delete(id));
+        assertEquals(e.getMessage(), "Colaborador com id {1} não localizado no sistema");
+        verify(repository).findByIdAndAtivoTrue(id);
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void deveAtualizarColaboradorComErroDeIdNaoEncontrado(){
+        //ARRANGE
+        Long id = 1L;
+
+        when(repository.findByIdAndAtivoTrue(id)).thenReturn(Optional.empty());
+
+        //ACT+ASSERT
+        Exception e =  assertThrows(EntityNotFoundException.class, () -> service.delete(id));
+        assertEquals(e.getMessage(), "Colaborador com id {1} não localizado no sistema");
+        verify(repository).findByIdAndAtivoTrue(id);
+        verify(repository, never()).save(any());
+    }
+
 
 }

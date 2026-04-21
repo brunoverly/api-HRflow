@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  mail:
+    host: ${MAIL_HOST}
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  error:
+    include-stacktrace: never
+
+key:
+  token-secret: ${TOKEN_SECRET}
+  token-issuer: HRFlow_gestao
+
