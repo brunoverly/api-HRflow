@@ -30,12 +30,4 @@ public class Notificacao {
     private LocalDateTime dataEnvio;
     @ManyToOne(fetch = FetchType.LAZY)
     private Colaborador colaborador;
-
-
-    @PrePersist
-    public void onCreate() {
-        this.dataEnvio = LocalDateTime.now();
-        this.tipo = TipoNotificacao.CRIADO;
-        this.status = StatusNotificacao.FALHOU;
-    }
 }

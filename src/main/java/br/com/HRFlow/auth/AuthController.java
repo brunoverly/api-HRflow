@@ -20,7 +20,7 @@ public class AuthController {
         return ResponseEntity.ok().body(service.create(dto));
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity<LoginResponseDto> login (@Valid @RequestBody LoginRequestDto dto) throws BadRequestException {
         return ResponseEntity.ok().body(service.login(dto));
     }

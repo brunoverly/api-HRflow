@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -91,7 +92,8 @@ public class AuthServiceTest {
         when(repository.existsByEmail(dto.email())).thenReturn(true);
 
         //ACT+ASSERT
-        assertThrows(DadosDuplicadosException.class, () -> service.create(dto));
+        Exception e = assertThrows(DadosDuplicadosException.class, () -> service.create(dto));
+        assertEquals(e.getMessage(),"Email informado não disponível");
         verify(repository).existsByEmail(dto.email());
         verify(repository, never()).save(any());
     }
@@ -106,7 +108,8 @@ public class AuthServiceTest {
                 "1234568");
 
         //ACT+ASSERT
-        assertThrows(IllegalArgumentException.class, () -> service.create(dto));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> service.create(dto));
+        assertEquals(e.getMessage(),"Senhas informadas não coincidem");
         verify(repository, never()).save(any());
     }
 
@@ -136,7 +139,8 @@ public class AuthServiceTest {
         when(repository.findByEmail(dto.email())).thenReturn(Optional.empty());
 
         //ACT+ARRANGE
-        assertThrows(AcessoNaoAutorizadoException.class, () -> service.login(dto));
+        Exception e = assertThrows(AcessoNaoAutorizadoException.class, () -> service.login(dto));
+        assertEquals(e.getMessage(),"Credenciais inválidas");
         verify(repository).findByEmail(dto.email());
     }
 
@@ -150,7 +154,8 @@ public class AuthServiceTest {
         when(encoder.matches(dto.senha(), usuario.getSenha())).thenReturn(false);
 
         //ACT+ASSERT
-        assertThrows(AcessoNaoAutorizadoException.class, () -> service.login(dto));
+        Exception e = assertThrows(AcessoNaoAutorizadoException.class, () -> service.login(dto));
+        assertEquals(e.getMessage(),"Credenciais inválidas");
         verify(repository).findByEmail(dto.email());
         verify(encoder).matches(dto.senha(), usuario.getSenha());
     }
