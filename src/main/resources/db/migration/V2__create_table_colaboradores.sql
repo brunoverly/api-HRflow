@@ -4,7 +4,7 @@ CREATE TABLE colaboradores (
                                email VARCHAR(200) NOT NULL,
                                cargo VARCHAR(200),
                                departamento VARCHAR(200),
-                               data_admissao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               data_admissao DATE,
                                ativo BOOLEAN DEFAULT TRUE,
                                gestor_id BIGINT,
                                CONSTRAINT fk_gestor_id

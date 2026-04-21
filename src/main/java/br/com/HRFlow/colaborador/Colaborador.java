@@ -2,7 +2,7 @@ package br.com.HRFlow.colaborador;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "colaboradores")
@@ -20,7 +20,8 @@ public class Colaborador {
     private String email;
     private String cargo;
     private String departamento;
-    private LocalDateTime dataAdimissao;
+    @Column(name = "data_admissao")
+    private LocalDate dataAdimissao;
     private boolean ativo;
     @ManyToOne(fetch = FetchType.LAZY)
     private Colaborador gestor;
